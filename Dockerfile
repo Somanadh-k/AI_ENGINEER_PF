@@ -2,6 +2,8 @@
 # For full semantic RAG: drop --no-group, set RAG_EMBEDDING_BACKEND=sentence-transformers, give it 2GB+ RAM.
 FROM python:3.14-slim
 RUN useradd -m -u 1000 user && pip install --no-cache-dir uv
+# AWS Lambda Web Adapter: inert on Render/other hosts, makes this image run on Lambda.
+COPY --from=public.ecr.aws/awsguru/aws-lambda-adapter:0.9.1 /lambda-adapter /opt/extensions/lambda-adapter
 USER user
 ENV PATH="/home/user/.local/bin:$PATH" HF_HOME=/home/user/hf UV_PROJECT_ENVIRONMENT=/home/user/venv
 WORKDIR /home/user/app
