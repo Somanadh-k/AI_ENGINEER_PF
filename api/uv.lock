@@ -189,7 +189,6 @@ dependencies = [
     { name = "psycopg", extra = ["binary"] },
     { name = "pydantic-settings" },
     { name = "python-multipart" },
-    { name = "sentence-transformers" },
     { name = "sqlalchemy", extra = ["asyncio"] },
     { name = "uvicorn", extra = ["standard"] },
 ]
@@ -197,6 +196,9 @@ dependencies = [
 [package.dev-dependencies]
 dev = [
     { name = "pytest" },
+]
+embeddings = [
+    { name = "sentence-transformers" },
 ]
 
 [package.metadata]
@@ -210,13 +212,13 @@ requires-dist = [
     { name = "psycopg", extras = ["binary"], specifier = ">=3.3.6" },
     { name = "pydantic-settings", specifier = ">=2.16.1" },
     { name = "python-multipart", specifier = ">=0.0.32" },
-    { name = "sentence-transformers", specifier = ">=6.2.0" },
     { name = "sqlalchemy", extras = ["asyncio"], specifier = ">=2.1.6" },
     { name = "uvicorn", extras = ["standard"], specifier = ">=0.54.0" },
 ]
 
 [package.metadata.requires-dev]
 dev = [{ name = "pytest", specifier = ">=9.1.1" }]
+embeddings = [{ name = "sentence-transformers", specifier = ">=6.2.0" }]
 
 [[package]]
 name = "attrs"

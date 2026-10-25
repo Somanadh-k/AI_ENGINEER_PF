@@ -12,12 +12,15 @@ dependencies = [
     "psycopg[binary]>=3.3.6",
     "pydantic-settings>=2.16.1",
     "python-multipart>=0.0.32",
-    "sentence-transformers>=6.2.0",
     "sqlalchemy[asyncio]>=2.1.6",
     "uvicorn[standard]>=0.54.0",
 ]
 
+[tool.uv]
+default-groups = ["dev", "embeddings"]
+
 [dependency-groups]
+embeddings = ["sentence-transformers>=6.2.0"]
 dev = [
     "pytest>=9.1.1",
 ]

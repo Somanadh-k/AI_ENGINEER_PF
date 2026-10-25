@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: somanadh-api
+    runtime: docker
+    plan: free
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - {key: ENVIRONMENT, value: production}
+      - {key: RAG_EMBEDDING_BACKEND, value: hash}
+      - {key: FRONTEND_ORIGIN, sync: false}
+      - {key: DATABASE_URL, sync: false}
+      - {key: ADMIN_EMAIL, sync: false}
+      - {key: ADMIN_PASSWORD_HASH, sync: false}
+      - {key: SECRET_SALT, sync: false}
+      - {key: PROXY_TOKEN, sync: false}
+      - {key: OPENROUTER_API_KEY, sync: false}
+      - {key: OPENROUTER_MODEL, sync: false}
