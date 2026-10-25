@@ -74,6 +74,9 @@ class Settings(BaseSettings):
     admin_cookie_name: str = "so_admin"
     cookie_secure: bool = False
     secret_salt: str = "change-me-in-production"
+    # When set, /api/* (except health and public content) requires this token in
+    # X-Proxy-Token, so only the Next.js proxy can reach rate-limited endpoints.
+    proxy_token: str = ""
 
     # --- Analytics ----------------------------------------------------------
     analytics_retention_days: int = 400

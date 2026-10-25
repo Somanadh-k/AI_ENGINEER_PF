@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import logging
+import secrets
 from contextlib import asynccontextmanager
 from datetime import datetime, timezone
 from pathlib import Path
@@ -58,6 +59,25 @@ app.add_middleware(
     allow_headers=["Content-Type", "Accept", "Authorization"],
     max_age=600,
 )
+
+
+_PUBLIC_API = {"/api/health", "/api/content"}
+
+
+@app.middleware("http")
+async def require_proxy_token(request: Request, call_next):
+    path = request.url.path
+    if (
+        settings.proxy_token
+        and path.startswith("/api/")
+        and path not in _PUBLIC_API
+        and request.method != "OPTIONS"
+        and not secrets.compare_digest(
+            request.headers.get("x-proxy-token", ""), settings.proxy_token
+        )
+    ):
+        return JSONResponse(status_code=403, content={"detail": "Forbidden"})
+    return await call_next(request)
 
 
 @app.middleware("http")

@@ -1,0 +1,9 @@
+.git
+.env
+**/node_modules
+web
+**/.venv
+**/__pycache__
+api/data
+api/uploads
+api/tests

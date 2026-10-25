@@ -47,6 +47,8 @@ async function proxy(request: NextRequest, segments: string[]): Promise<Response
     if (forwarded) headers.set("x-forwarded-for", forwarded);
   }
 
+  if (process.env.API_PROXY_TOKEN) headers.set("x-proxy-token", process.env.API_PROXY_TOKEN);
+
   const hasBody = !["GET", "HEAD"].includes(request.method);
   const body = hasBody ? await request.arrayBuffer() : undefined;
 

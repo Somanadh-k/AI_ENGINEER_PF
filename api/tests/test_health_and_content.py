@@ -52,3 +52,12 @@ def test_verified_and_sealed_project_routes(client: TestClient) -> None:
 
     missing = client.get("/api/content/projects/not-a-project")
     assert missing.status_code == 404
+
+
+def test_proxy_token_blocks_direct_api_access(client, monkeypatch):
+    from app.config import settings
+
+    monkeypatch.setattr(settings, "proxy_token", "t0ken")
+    assert client.get("/api/health").status_code == 200
+    assert client.get("/api/ai/status").status_code == 403
+    assert client.get("/api/ai/status", headers={"x-proxy-token": "t0ken"}).status_code == 200
