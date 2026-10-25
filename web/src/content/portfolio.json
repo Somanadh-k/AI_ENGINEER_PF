@@ -1,0 +1,669 @@
+{
+  "meta": {
+    "schemaVersion": 1,
+    "updatedAt": "2026-10-25",
+    "notice": "Only verified information is published. Fields marked pending are intentionally empty and can be filled in /admin."
+  },
+  "profile": {
+    "name": "Somanadh K",
+    "displayName": "SOMANADH K",
+    "shortName": "Somanadh",
+    "initials": "SK",
+    "kicker": "Forward Deployed AI Engineer Intern",
+    "headline": "I build systems that think.",
+    "tagline": "Building intelligent systems, one problem at a time.",
+    "status": "B.Tech Computer Science & Engineering student",
+    "statusDetail": "Forward Deployed AI Engineer Intern",
+    "intro": "I'm a Computer Science student and AI engineering intern focused on developing intelligent applications, backend systems, AI agents, and retrieval-augmented generation solutions. I enjoy exploring how AI can solve practical problems and turning ideas into working software.",
+    "about": [
+      "I am a Computer Science and Engineering student who works at the meeting point of language models and the systems around them. My interest is less in the demo and more in the distance between a demo and something a person can actually use: the API behind it, the retrieval that grounds it, the agent loop that has to fail gracefully.",
+      "As a Forward Deployed AI Engineer Intern, I worked on AI-powered applications, intelligent workflows, backend integrations, and LLM-driven solutions. Before that, I spent a semester as a Web Development Intern, which is where the product instinct started.",
+      "I am early in my career and deliberate about saying so. What I have is curiosity, hands-on internship experience, and a growing body of work in agentic AI, retrieval, and backend engineering. What I do not have is a decade of production war stories, and I would rather show you the real thing."
+    ],
+    "rotatingIdentities": [
+      "FORWARD DEPLOYED AI ENGINEER INTERN",
+      "AI/ML & BACKEND DEVELOPER",
+      "AI AGENT ORCHESTRATION",
+      "RAG SYSTEMS BUILDER",
+      "AI ENGINEERING ENTHUSIAST"
+    ],
+    "technicalInterests": [
+      "Artificial Intelligence",
+      "Generative AI",
+      "Large Language Models",
+      "Retrieval-Augmented Generation",
+      "Agentic AI",
+      "Multi-agent Systems",
+      "Backend Engineering",
+      "FastAPI",
+      "Python",
+      "SQL",
+      "API Development",
+      "System Architecture",
+      "AI Automation",
+      "Intelligent Product Development"
+    ],
+    "email": "skollavajjala@gmail.com",
+    "location": null,
+    "availability": "Open to AI engineering, backend, and forward-deployed engineering conversations.",
+    "links": {
+      "linkedin": "https://www.linkedin.com/in/somanadh-k-5ba42a25a",
+      "github": null,
+      "existingPortfolio": "https://somanadh-k.github.io/My_Portfolio/",
+      "x": null
+    },
+    "resume": {
+      "path": "/resume/Somanadh-K-Resume.pdf",
+      "label": "Résumé",
+      "lastUpdated": "2026-10-25",
+      "generated": true
+    },
+    "portrait": {
+      "src": null,
+      "alt": "Portrait of Somanadh K",
+      "note": "A real photograph can be uploaded in /admin. Until then the portrait is an intentionally abstract holographic placeholder."
+    },
+    "education": [
+      {
+        "degree": "B.Tech",
+        "field": "Computer Science and Engineering",
+        "institution": null,
+        "start": null,
+        "end": null,
+        "note": "Institution details not published on this site yet."
+      }
+    ]
+  },
+  "hero": {
+    "eyebrow": "SOMANADH.OS / LIVING INTELLIGENCE",
+    "scrollCue": "SCROLL TO DECODE",
+    "primaryCta": {
+      "label": "EXPLORE MY WORK",
+      "href": "#work"
+    },
+    "secondaryCta": {
+      "label": "ASK MY AI",
+      "action": "ai"
+    },
+    "resumeCta": {
+      "label": "DOWNLOAD RÉSUMÉ",
+      "href": "/resume/Somanadh-K-Resume.pdf"
+    },
+    "portraitLabels": [
+      {
+        "text": "HUMAN",
+        "value": "IN THE LOOP"
+      },
+      {
+        "text": "STACK",
+        "value": "PYTHON · FASTAPI"
+      },
+      {
+        "text": "FOCUS",
+        "value": "AGENTS + RAG"
+      },
+      {
+        "text": "MODE",
+        "value": "LEARNING IN PUBLIC"
+      }
+    ]
+  },
+  "audiences": [
+    {
+      "id": "recruiter",
+      "label": "Recruiter",
+      "blurb": "Hiring for AI, backend, or forward-deployed engineering roles."
+    },
+    {
+      "id": "engineer",
+      "label": "Engineer",
+      "blurb": "Here for the architecture, APIs, agents, and retrieval."
+    },
+    {
+      "id": "founder",
+      "label": "Founder",
+      "blurb": "Looking for someone who can turn an AI idea into a product surface."
+    },
+    {
+      "id": "student",
+      "label": "Student",
+      "blurb": "Mapping a path into AI engineering."
+    },
+    {
+      "id": "visitor",
+      "label": "General visitor",
+      "blurb": "Just curious about the human behind the intelligence."
+    }
+  ],
+  "skills": [
+    {
+      "id": "ai-ml",
+      "index": "01",
+      "label": "AI / ML Engineering",
+      "color": "cyan",
+      "summary": "Working with language models as components of real applications, not as novelties.",
+      "skills": [
+        {
+          "id": "llms",
+          "name": "LLMs",
+          "kind": "concept",
+          "what": "Large language models used as reasoning and generation components inside an application.",
+          "how": "Applied while developing LLM-driven solutions during a Forward Deployed AI Engineering internship.",
+          "relatedProjects": [
+            "somanadh-os"
+          ],
+          "relatedExperience": [
+            "soopervision-ai"
+          ]
+        },
+        {
+          "id": "generative-ai",
+          "name": "Generative AI",
+          "kind": "concept",
+          "what": "Systems that generate text or structured output from learned patterns in data.",
+          "how": "The umbrella for the AI-powered application work I have been doing as an intern.",
+          "relatedProjects": [],
+          "relatedExperience": [
+            "soopervision-ai"
+          ]
+        },
+        {
+          "id": "prompt-engineering",
+          "name": "Prompt Engineering",
+          "kind": "practice",
+          "what": "Designing instructions, context, and constraints so a model behaves reliably inside a product.",
+          "how": "Used to shape grounded, non-inventive assistant behaviour and structured application outputs.",
+          "relatedProjects": [
+            "somanadh-os"
+          ],
+          "relatedExperience": [
+            "soopervision-ai"
+          ]
+        },
+        {
+          "id": "embeddings",
+          "name": "Embeddings",
+          "kind": "concept",
+          "what": "Vector representations of text that make semantic similarity computable.",
+          "how": "Part of the retrieval pipeline I study and build with: chunk, embed, search, ground.",
+          "relatedProjects": [],
+          "relatedExperience": []
+        },
+        {
+          "id": "vector-databases",
+          "name": "Vector Databases",
+          "kind": "tool",
+          "what": "Storage and indexing for embedding vectors, enabling similarity search at query time.",
+          "how": "Used conceptually in RAG design; this portfolio deliberately uses structured retrieval instead because the corpus is tiny.",
+          "relatedProjects": [],
+          "relatedExperience": []
+        }
+      ]
+    },
+    {
+      "id": "backend",
+      "index": "02",
+      "label": "Backend Development",
+      "color": "violet",
+      "summary": "The unglamorous layer that makes an intelligent feature dependable.",
+      "skills": [
+        {
+          "id": "python",
+          "name": "Python",
+          "kind": "language",
+          "what": "The primary language for my AI and backend work.",
+          "how": "Used for AI application development, API services, and retrieval pipelines.",
+          "relatedProjects": [
+            "somanadh-os"
+          ],
+          "relatedExperience": [
+            "soopervision-ai"
+          ]
+        },
+        {
+          "id": "fastapi",
+          "name": "FastAPI",
+          "kind": "framework",
+          "what": "A typed Python web framework for building HTTP APIs, with automatic OpenAPI documentation.",
+          "how": "Used to build backend APIs and integrate models with application services.",
+          "relatedProjects": [
+            "somanadh-os"
+          ],
+          "relatedExperience": [
+            "soopervision-ai"
+          ]
+        },
+        {
+          "id": "rest-apis",
+          "name": "REST APIs",
+          "kind": "concept",
+          "what": "Resource-oriented HTTP interfaces between clients and services.",
+          "how": "Designed and consumed while implementing backend integrations and AI-powered application features.",
+          "relatedProjects": [],
+          "relatedExperience": [
+            "soopervision-ai"
+          ]
+        },
+        {
+          "id": "sql",
+          "name": "SQL",
+          "kind": "language",
+          "what": "The query language for relational data: schema, constraints, joins, aggregation.",
+          "how": "Used for application data modelling and the analytics queries behind this site's admin dashboard.",
+          "relatedProjects": [
+            "somanadh-os"
+          ],
+          "relatedExperience": [
+            "soopervision-ai"
+          ]
+        },
+        {
+          "id": "system-architecture",
+          "name": "System Architecture",
+          "kind": "concept",
+          "what": "How frontend, backend, data, and external models fit together, and where they fail.",
+          "how": "Practised by designing this portfolio end to end — a Next.js client, FastAPI service, and Postgres-ready data layer.",
+          "relatedProjects": [
+            "somanadh-os"
+          ],
+          "relatedExperience": []
+        }
+      ]
+    },
+    {
+      "id": "agentic",
+      "index": "03",
+      "label": "AI Agent Orchestration",
+      "color": "mint",
+      "summary": "Coordinating models, tools, and state so a task completes without a human holding every step.",
+      "skills": [
+        {
+          "id": "ai-agents",
+          "name": "AI Agents",
+          "kind": "concept",
+          "what": "LLM-driven loops that decide what to do next, call tools, and observe results.",
+          "how": "Explored while building agentic AI workflows; the assistant on this site is a constrained, grounded example.",
+          "relatedProjects": [
+            "somanadh-os"
+          ],
+          "relatedExperience": [
+            "soopervision-ai"
+          ]
+        },
+        {
+          "id": "tool-calling",
+          "name": "Tool Calling",
+          "kind": "concept",
+          "what": "Giving a model a typed set of actions it can invoke instead of only producing prose.",
+          "how": "Studied and applied in agentic workflow design, with strict input validation on every tool boundary.",
+          "relatedProjects": [],
+          "relatedExperience": [
+            "soopervision-ai"
+          ]
+        },
+        {
+          "id": "ai-workflows",
+          "name": "AI Workflows",
+          "kind": "practice",
+          "what": "Deterministic orchestration around non-deterministic models: retries, limits, fallbacks.",
+          "how": "Built intelligent workflow features and automation during my AI engineering internship.",
+          "relatedProjects": [
+            "somanadh-os"
+          ],
+          "relatedExperience": [
+            "soopervision-ai"
+          ]
+        },
+        {
+          "id": "multi-agent",
+          "name": "Multi-agent Concepts",
+          "kind": "concept",
+          "what": "Specialised agents collaborating or delegating rather than one monolith doing everything.",
+          "how": "A technical interest I am actively exploring; not yet presented as production experience.",
+          "relatedProjects": [],
+          "relatedExperience": []
+        },
+        {
+          "id": "automation",
+          "name": "Automation",
+          "kind": "practice",
+          "what": "Removing repetitive human steps with reliable, observable pipelines.",
+          "how": "Applied to AI automation workflows and backend integrations as an intern.",
+          "relatedProjects": [],
+          "relatedExperience": [
+            "soopervision-ai"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rag",
+      "index": "04",
+      "label": "Retrieval-Augmented Generation",
+      "color": "silver",
+      "summary": "Making a model answer from evidence instead of vibes.",
+      "skills": [
+        {
+          "id": "rag",
+          "name": "RAG",
+          "kind": "concept",
+          "what": "Retrieve relevant evidence, inject it into context, and constrain the model to it.",
+          "how": "Designed the grounded assistant on this portfolio: structured retrieval over verified profile content with citations.",
+          "relatedProjects": [
+            "somanadh-os"
+          ],
+          "relatedExperience": [
+            "soopervision-ai"
+          ]
+        },
+        {
+          "id": "document-processing",
+          "name": "Document Processing",
+          "kind": "practice",
+          "what": "Turning messy source documents into clean, chunked, attributable text.",
+          "how": "Part of the RAG pipeline work I have explored: ingest, normalise, chunk, index.",
+          "relatedProjects": [],
+          "relatedExperience": []
+        },
+        {
+          "id": "semantic-search",
+          "name": "Semantic Search",
+          "kind": "concept",
+          "what": "Ranking by meaning rather than exact token matches.",
+          "how": "Explored with embeddings and vector search; this site uses lexical + structured scoring because the corpus is small.",
+          "relatedProjects": [],
+          "relatedExperience": []
+        },
+        {
+          "id": "grounding",
+          "name": "Grounded Responses",
+          "kind": "practice",
+          "what": "Constraining outputs to retrieved facts, with explicit refusal when evidence is absent.",
+          "how": "Enforced in this portfolio's assistant: no invented employers, metrics, or achievements.",
+          "relatedProjects": [
+            "somanadh-os"
+          ],
+          "relatedExperience": []
+        }
+      ]
+    }
+  ],
+  "toolkit": [
+    "Python",
+    "FastAPI",
+    "SQL",
+    "REST APIs",
+    "OpenRouter",
+    "OpenCode",
+    "LLM APIs",
+    "Prompt Design",
+    "Structured Retrieval"
+  ],
+  "experience": [
+    {
+      "id": "soopervision-ai",
+      "org": "SooperVision",
+      "role": "Forward Deployed AI Engineer Intern",
+      "type": "Internship",
+      "start": "2026-05",
+      "end": "2026-08",
+      "current": false,
+      "location": null,
+      "summary": "Forward-deployed work on AI-powered applications, intelligent workflows, and backend integrations.",
+      "responsibilities": [
+        "Developing AI-powered applications.",
+        "Building intelligent workflows.",
+        "Implementing backend integrations.",
+        "Working with APIs and automation systems.",
+        "Developing LLM-driven solutions.",
+        "Contributing to full-stack AI applications."
+      ],
+      "technologies": [
+        "Python",
+        "FastAPI",
+        "LLM APIs",
+        "REST APIs"
+      ],
+      "learnings": [],
+      "achievements": [],
+      "note": "Technology tags reflect tools verified elsewhere in this profile; deliverables and outcomes are intentionally not claimed."
+    },
+    {
+      "id": "soopervision-web",
+      "org": "SooperVision",
+      "role": "Web Development Intern",
+      "type": "Internship",
+      "start": "2026-01",
+      "end": "2026-05",
+      "current": false,
+      "location": null,
+      "summary": "Earlier web development internship at SooperVision.",
+      "responsibilities": [],
+      "technologies": [],
+      "learnings": [],
+      "achievements": [],
+      "note": "Detailed responsibilities for this role have not been published yet."
+    },
+    {
+      "id": "ieee-ssit",
+      "org": "IEEE Vardhaman Student Branch",
+      "role": "Chair — Society on Social Implications of Technology",
+      "type": "Leadership",
+      "start": "2026-07",
+      "end": null,
+      "current": true,
+      "location": null,
+      "summary": "Leading the student chapter's Society on Social Implications of Technology.",
+      "responsibilities": [],
+      "technologies": [],
+      "learnings": [],
+      "achievements": [],
+      "note": "Chapter programmes and outcomes will be added once verified."
+    }
+  ],
+  "projects": [
+    {
+      "id": "studentos",
+      "slug": "studentos",
+      "name": "StudentOS",
+      "tagline": "Details pending verification",
+      "category": "AI Product",
+      "status": "unverified",
+      "year": null,
+      "featured": true,
+      "verified": false,
+      "summary": null,
+      "problem": null,
+      "whyItMatters": null,
+      "architecture": null,
+      "stack": [],
+      "implementation": null,
+      "challenges": [],
+      "decisions": [],
+      "screenshots": [],
+      "video": null,
+      "github": null,
+      "live": null,
+      "lessons": [],
+      "future": [],
+      "note": "This record is intentionally minimal. Functionality, metrics, screenshots, and links will be published only after they are verified."
+    },
+    {
+      "id": "qems",
+      "slug": "qems",
+      "name": "QEMS",
+      "tagline": "Details pending verification",
+      "category": "Systems",
+      "status": "unverified",
+      "year": null,
+      "featured": true,
+      "verified": false,
+      "summary": null,
+      "problem": null,
+      "whyItMatters": null,
+      "architecture": null,
+      "stack": [],
+      "implementation": null,
+      "challenges": [],
+      "decisions": [],
+      "screenshots": [],
+      "video": null,
+      "github": null,
+      "live": null,
+      "lessons": [],
+      "future": [],
+      "note": "This record is intentionally minimal. Functionality, metrics, screenshots, and links will be published only after they are verified."
+    },
+    {
+      "id": "somanadh-os",
+      "slug": "somanadh-os",
+      "name": "SOMANADH.OS",
+      "tagline": "A living intelligence portfolio, built as a real system.",
+      "category": "AI Platform",
+      "status": "active",
+      "year": "2026",
+      "featured": true,
+      "verified": true,
+      "summary": "This website: a cinematic Next.js portfolio with a grounded AI assistant, a FastAPI backend, privacy-conscious visitor analytics, and a private content studio.",
+      "problem": "A portfolio usually asks a recruiter to trust a PDF. I wanted a place where the claim and the proof are the same artifact: the assistant answers from verified records, the analytics are real, and the interface is the engineering sample.",
+      "whyItMatters": "It demonstrates the whole path of an AI feature — prompt design, retrieval, streaming transport, failure fallbacks, rate limits, privacy boundaries — instead of a UI wrapped around an API key.",
+      "architecture": "Next.js App Router renders content and proxies every browser request to a FastAPI service. The browser only ever talks to first-party routes, so the OpenRouter key never leaves the server. FastAPI owns content, retrieval, analytics ingestion, admin sessions, and uploads; SQLAlchemy talks to SQLite locally and Postgres in production. The admin dashboard reads aggregated SQL, and live presence streams over Server-Sent Events.",
+      "stack": [
+        "TypeScript",
+        "Next.js",
+        "React",
+        "Three.js",
+        "FastAPI",
+        "Python",
+        "SQLAlchemy",
+        "SQLite / Postgres",
+        "OpenRouter",
+        "Tailwind CSS"
+      ],
+      "implementation": "Content is seeded from a single JSON source of truth into content tables and re-read at request time, so the studio updates the site without a deploy. The assistant builds a knowledge base from those records, retrieves by lexical relevance plus intent, and streams answers through an SSE pipeline. Without an OpenRouter key it answers deterministically from the same records instead of pretending to call a model.",
+      "challenges": [
+        "Keeping a visually heavy homepage fast: the neural scene is lazy-loaded, capped at a modest device pixel ratio, paused off-screen, and replaced by a static composition for reduced-motion visitors.",
+        "Making the assistant honest: the unverified project records had to produce an explicit 'not published yet', not a plausible invention.",
+        "Analytics that respect visitors: anonymous identifiers, consent gating, no raw IP storage, and country data only when the host provides it."
+      ],
+      "decisions": [
+        "Server-side proxy instead of exposing the API directly, so credentials and cookies stay off the client.",
+        "Structured lexical retrieval instead of pgvector: with a corpus this small, embeddings would add infrastructure without improving grounded answers.",
+        "Deterministic fallback answers as a first-class mode, not an error screen.",
+        "SSE for streamed answers and live admin pulses: no WebSocket infrastructure for a single-instance dashboard."
+      ],
+      "screenshots": [],
+      "video": null,
+      "github": null,
+      "live": null,
+      "lessons": [
+        "The hard part of an AI feature is the boundary: what the model may say, what happens when it fails, and what the system refuses to do.",
+        "Performance is an art-direction problem — the most expensive effect is usually not the one carrying the concept."
+      ],
+      "future": [
+        "Deploy the frontend and API, then publish verified screenshots and a walkthrough.",
+        "Add a project-level architecture viewer with per-node explanations.",
+        "Move rate limiting to Redis if the API runs on more than one instance."
+      ],
+      "note": "Built and tested locally. Deployment configuration is documented in the repository; live URL and repository link will be added once published."
+    }
+  ],
+  "certifications": [],
+  "beyond": {
+    "headline": "BEYOND THE CODE",
+    "standfirst": "The part of the system that is not a system.",
+    "paragraphs": [
+      "I am drawn to problems that sit awkwardly between disciplines — where the model is only half the answer and the other half is a schema, a permission boundary, or a sentence a user actually understands.",
+      "The way I work is simple: read the requirement twice, build the smallest honest version, then make it survive contact with a real person. I would rather ship a narrow feature that holds than a wide one that only demos well.",
+      "Leading the IEEE Society on Social Implications of Technology chapter has sharpened a question I keep returning to: intelligence is not the hard part to justify — consequences are. That shapes how I want to build."
+    ],
+    "principles": [
+      {
+        "index": "01",
+        "title": "Curiosity, operationalised",
+        "body": "New model, new framework, new failure mode — I learn by rebuilding the thing until the mental model holds."
+      },
+      {
+        "index": "02",
+        "title": "Product before polish",
+        "body": "A feature earns its animation only after it earns its place in the workflow."
+      },
+      {
+        "index": "03",
+        "title": "Honest engineering",
+        "body": "No invented metrics. No borrowed seniority. Clear about what works, clearer about what does not yet."
+      },
+      {
+        "index": "04",
+        "title": "Systems thinking",
+        "body": "Every model call has a cost, a latency budget, and a failure path. Design all three."
+      }
+    ],
+    "interests": [],
+    "photographs": [],
+    "note": "Personal interests and photographs can be added in /admin. Nothing is invented here."
+  },
+  "buildLog": [
+    {
+      "id": "log-2026-01",
+      "date": "2026-01",
+      "title": "First engineering role",
+      "body": "Joined SooperVision as a Web Development Intern.",
+      "kind": "role"
+    },
+    {
+      "id": "log-2026-05",
+      "date": "2026-05",
+      "title": "From web to intelligent systems",
+      "body": "Moved into a Forward Deployed AI Engineer internship: AI-powered applications, intelligent workflows, and backend integrations.",
+      "kind": "role"
+    },
+    {
+      "id": "log-2026-07",
+      "date": "2026-07",
+      "title": "Chair, IEEE SSIT",
+      "body": "Began leading the Society on Social Implications of Technology at the IEEE Vardhaman Student Branch.",
+      "kind": "leadership"
+    },
+    {
+      "id": "log-2026-10",
+      "date": "2026-10",
+      "title": "SOMANADH.OS built",
+      "body": "Built this portfolio end to end: cinematic frontend, grounded AI assistant, privacy-conscious analytics, and a private content studio. Local verification is complete; public deployment is pending.",
+      "kind": "build"
+    }
+  ],
+  "assistant": {
+    "name": "SOMANADH.AI",
+    "tagline": "Grounded in verified portfolio data. Nothing invented.",
+    "disclaimer": "Assistant-generated. May be incomplete — verify anything important with Somanadh directly.",
+    "suggestedQuestions": [
+      "Who is Somanadh?",
+      "What does he work on at SooperVision?",
+      "How does he use RAG?",
+      "Does he know FastAPI?",
+      "What are StudentOS and QEMS?",
+      "Why should I hire him?",
+      "How can I contact him?"
+    ],
+    "fallbackNotice": "Local grounded mode — OpenRouter is not configured, so answers are assembled directly from verified portfolio records.",
+    "greeting": "I'm SOMANADH.AI. Ask me about Somanadh's internship, backend work, agent experiments, or how this site is built. I answer from verified records and will tell you when something is unpublished."
+  },
+  "seo": {
+    "title": "Somanadh K — Forward Deployed AI Engineer Intern",
+    "titleTemplate": "%s — Somanadh K",
+    "description": "Portfolio of Somanadh K, a Computer Science student and Forward Deployed AI Engineer Intern building AI applications, backend systems, agentic workflows, and retrieval-augmented generation.",
+    "keywords": [
+      "Somanadh K",
+      "AI engineer intern",
+      "FastAPI developer",
+      "RAG systems",
+      "AI agent orchestration",
+      "backend engineer",
+      "Python developer",
+      "forward deployed AI engineer"
+    ],
+    "siteUrl": "http://localhost:3000",
+    "locale": "en_IN"
+  }
+}

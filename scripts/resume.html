@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Somanadh K — Résumé</title>
+    <style>
+      @page {
+        size: A4;
+        margin: 13mm 15mm 12mm;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        background: #ffffff;
+        color: #16181d;
+      }
+
+      body {
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-size: 9.15pt;
+        line-height: 1.42;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .top {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 24px;
+        border-bottom: 2px solid #16181d;
+        padding-bottom: 9px;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: 28pt;
+        line-height: 0.95;
+        letter-spacing: -0.055em;
+        font-weight: 650;
+      }
+
+      .role {
+        margin: 6px 0 0;
+        font-size: 8.2pt;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        font-weight: 600;
+        color: #4a505b;
+      }
+
+      .contact {
+        text-align: right;
+        font-size: 8.2pt;
+        line-height: 1.55;
+        color: #333842;
+      }
+
+      .contact a {
+        border-bottom: 0.5px solid #9aa1ad;
+      }
+
+      .summary {
+        margin: 10px 0 0;
+        color: #333842;
+        max-width: 100%;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: 1.55fr 0.95fr;
+        gap: 18px;
+        margin-top: 13px;
+      }
+
+      section {
+        margin-top: 12px;
+      }
+
+      section:first-child {
+        margin-top: 0;
+      }
+
+      h2 {
+        margin: 0 0 6px;
+        padding-bottom: 3px;
+        border-bottom: 1px solid #c9ced7;
+        font-size: 7.6pt;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: #5b626e;
+        font-weight: 700;
+      }
+
+      .job {
+        margin-bottom: 9px;
+        break-inside: avoid;
+      }
+
+      .job-head {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        align-items: baseline;
+      }
+
+      .job-title {
+        font-weight: 700;
+        font-size: 9.9pt;
+        letter-spacing: -0.01em;
+      }
+
+      .job-date {
+        font-size: 7.7pt;
+        color: #5b626e;
+        white-space: nowrap;
+      }
+
+      .org {
+        margin: 1px 0 3px;
+        color: #4a505b;
+        font-size: 8.6pt;
+        font-weight: 600;
+      }
+
+      ul {
+        margin: 2px 0 0;
+        padding-left: 13px;
+      }
+
+      li {
+        margin: 0 0 2px;
+        padding-left: 1px;
+      }
+
+      .compact li {
+        margin-bottom: 1px;
+      }
+
+      .tags {
+        margin-top: 3px;
+        color: #5b626e;
+        font-size: 7.6pt;
+      }
+
+      .project-name {
+        font-weight: 700;
+        font-size: 9.6pt;
+      }
+
+      .project-meta {
+        margin: 1px 0 3px;
+        font-size: 7.8pt;
+        color: #5b626e;
+      }
+
+      .skill-group {
+        margin-bottom: 5px;
+      }
+
+      .skill-label {
+        font-weight: 700;
+        font-size: 8.3pt;
+      }
+
+      .skill-list {
+        color: #3b414b;
+        font-size: 8.2pt;
+      }
+
+      .note {
+        margin-top: 10px;
+        padding-top: 6px;
+        border-top: 1px solid #d7dbe2;
+        font-size: 7.1pt;
+        line-height: 1.45;
+        color: #6b7280;
+      }
+
+      .foot {
+        margin-top: 9px;
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        font-size: 6.8pt;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: #8a919c;
+      }
+
+      .accent {
+        color: #087f8c;
+        font-weight: 700;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="top">
+      <div>
+        <h1>Somanadh K</h1>
+        <p class="role">Forward Deployed AI Engineer Intern · AI / Backend / RAG</p>
+      </div>
+      <div class="contact">
+        <div><a href="mailto:skollavajjala@gmail.com">skollavajjala@gmail.com</a></div>
+        <div><a href="https://www.linkedin.com/in/somanadh-k-5ba42a25a">linkedin.com/in/somanadh-k</a></div>
+        <div><a href="https://somanadh-k.github.io/My_Portfolio/">somanadh-k.github.io/My_Portfolio</a></div>
+      </div>
+    </header>
+
+    <p class="summary">
+      Computer Science student and AI engineering intern focused on intelligent applications,
+      backend systems, AI agents, and retrieval-augmented generation. I care about the distance
+      between a demo and a dependable product: the API behind it, the retrieval that grounds it,
+      and the failure paths that keep it honest.
+    </p>
+
+    <div class="grid">
+      <div>
+        <section>
+          <h2>Experience</h2>
+
+          <div class="job">
+            <div class="job-head">
+              <span class="job-title">Forward Deployed AI Engineer Intern</span>
+              <span class="job-date">May 2026 — Aug 2026</span>
+            </div>
+            <p class="org">SooperVision · Internship</p>
+            <ul class="compact">
+              <li>Developed AI-powered applications and intelligent workflows.</li>
+              <li>Implemented backend integrations and worked with APIs and automation systems.</li>
+              <li>Developed LLM-driven solutions and contributed to full-stack AI applications.</li>
+            </ul>
+            <p class="tags">Python · FastAPI · LLM APIs · REST APIs</p>
+          </div>
+
+          <div class="job">
+            <div class="job-head">
+              <span class="job-title">Web Development Intern</span>
+              <span class="job-date">Jan 2026 — May 2026</span>
+            </div>
+            <p class="org">SooperVision · Internship</p>
+            <ul class="compact">
+              <li>Earlier web development internship at SooperVision; detailed responsibilities are not published yet.</li>
+            </ul>
+          </div>
+
+          <div class="job">
+            <div class="job-head">
+              <span class="job-title">Chair — Society on Social Implications of Technology</span>
+              <span class="job-date">Jul 2026 — Present</span>
+            </div>
+            <p class="org">IEEE Vardhaman Student Branch · Leadership</p>
+            <ul class="compact">
+              <li>Leading the student chapter's Society on Social Implications of Technology.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section>
+          <h2>Selected project</h2>
+          <div class="job">
+            <div class="project-name">SOMANADH.OS <span class="accent">/ verified record</span></div>
+            <p class="project-meta">AI platform · 2026 · TypeScript, Next.js, React, Three.js, FastAPI, Python, SQLAlchemy, SQLite/Postgres, OpenRouter, Tailwind CSS</p>
+            <ul class="compact">
+              <li>Built a cinematic portfolio with a grounded AI assistant, FastAPI backend, privacy-conscious analytics, and a private content studio.</li>
+              <li>Designed a server-side proxy so the OpenRouter key never reaches the browser; retrieval is deterministic and falls back to labelled local answers when no model is configured.</li>
+              <li>Implemented SSE streaming, rate limits, admin auth, upload validation, and consent-gated analytics with no raw IP storage.</li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <div>
+        <section>
+          <h2>Technical focus</h2>
+          <div class="skill-group">
+            <div class="skill-label">AI / ML Engineering</div>
+            <div class="skill-list">LLMs · Generative AI · Prompt engineering · Embeddings · Vector database concepts</div>
+          </div>
+          <div class="skill-group">
+            <div class="skill-label">Backend Development</div>
+            <div class="skill-list">Python · FastAPI · REST APIs · SQL · System architecture</div>
+          </div>
+          <div class="skill-group">
+            <div class="skill-label">AI Agent Orchestration</div>
+            <div class="skill-list">AI agents · Tool calling · AI workflows · Automation · Multi-agent concepts</div>
+          </div>
+          <div class="skill-group">
+            <div class="skill-label">Retrieval-Augmented Generation</div>
+            <div class="skill-list">RAG · Document processing · Semantic search · Grounded responses</div>
+          </div>
+        </section>
+
+        <section>
+          <h2>Toolkit</h2>
+          <p class="skill-list" style="margin: 0">
+            Python · FastAPI · SQL · REST APIs · OpenRouter · OpenCode · LLM APIs · Prompt design ·
+            Structured retrieval · TypeScript · Next.js · React · Three.js · Tailwind CSS
+          </p>
+        </section>
+
+        <section>
+          <h2>Education</h2>
+          <div class="job">
+            <div class="project-name">B.Tech — Computer Science and Engineering</div>
+            <p class="project-meta">Institution details available on request.</p>
+          </div>
+        </section>
+
+        <section>
+          <h2>Availability</h2>
+          <p class="skill-list" style="margin: 0">
+            Open to AI engineering, backend, and forward-deployed engineering conversations.
+          </p>
+        </section>
+      </div>
+    </div>
+
+    <p class="note">
+      Prepared from the same verified records as the portfolio at SOMANADH.OS. Responsibilities and
+      technologies are listed only where they are verified; no metrics, outcomes, employers, or
+      credentials have been invented. StudentOS and QEMS are intentionally omitted because their
+      records are still awaiting verification.
+    </p>
+
+    <div class="foot">
+      <span>Somanadh K · Résumé</span>
+      <span>Generated 2026 · somanadh-k.github.io/My_Portfolio</span>
+    </div>
+  </body>
+</html>

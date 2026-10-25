@@ -1,0 +1,30 @@
+# Local secrets and data
+.env
+.env.local
+.env.*.local
+api/data/
+api/uploads/
+data/
+
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+api/server.log
+
+# Node / Next
+node_modules/
+.next/
+out/
+*.tsbuildinfo
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
+
+# Local test output
+test-results/
+playwright-report/
