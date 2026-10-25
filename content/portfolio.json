@@ -59,9 +59,9 @@
       "generated": true
     },
     "portrait": {
-      "src": null,
-      "alt": "Portrait of Somanadh K",
-      "note": "A real photograph can be uploaded in /admin. Until then the portrait is an intentionally abstract holographic placeholder."
+      "src": "/images/somanadh-profile.jpeg",
+      "alt": "Portrait of Somanadh K wearing glasses and a blue shirt.",
+      "note": "Profile photograph supplied by Somanadh. The original is preserved at the repository root."
     },
     "education": [
       {

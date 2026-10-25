@@ -85,7 +85,7 @@ export function PortraitFrame({
 
       <div
         ref={innerRef}
-        className="relative aspect-[4/5] overflow-hidden border border-white/10 bg-[#0b0e15] transition-transform duration-500 [transform-style:preserve-3d] will-change-transform"
+        className="portrait-frame relative aspect-[4/5] overflow-hidden border border-white/10 bg-[#0b0e15] transition-transform duration-500 [transform-style:preserve-3d] will-change-transform"
         style={{ transitionTimingFunction: "var(--ease-out)" }}
       >
         <div aria-hidden className="absolute inset-0 grid-fade opacity-60" />
@@ -99,9 +99,9 @@ export function PortraitFrame({
             src={portrait.src}
             alt={portrait.alt || `Portrait of ${name}`}
             fill
-            sizes="(max-width: 1024px) 80vw, 460px"
-            className="object-cover object-center opacity-95"
-            priority
+            sizes="(max-width: 640px) 82vw, (max-width: 1024px) 62vw, 460px"
+            className="portrait-image object-cover object-center"
+            preload
           />
         ) : (
           <div className="absolute inset-0 flex flex-col items-center justify-center" role="img" aria-label="Abstract holographic portrait placeholder. A real photograph can be uploaded by Somanadh.">
@@ -142,6 +142,7 @@ export function PortraitFrame({
           </div>
         )}
 
+        <div aria-hidden className="portrait-sheen pointer-events-none absolute inset-0" />
         <div aria-hidden className="pointer-events-none absolute inset-0 bg-[linear-gradient(transparent_50%,rgba(0,0,0,0.18)_50%)] bg-[length:100%_3px] opacity-30" />
 
         {/* Corner brackets */}

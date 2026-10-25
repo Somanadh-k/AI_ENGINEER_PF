@@ -164,7 +164,7 @@ Set `API_INTERNAL_URL` to a URL the Next.js server can reach. If the frontend an
 10. If OpenRouter is configured, the assistant streams a live answer and the UI labels it as OpenRouter.
 11. `/admin` → Knowledge shows the source file, 22 chunks, `indexed: true`, and a recent timestamp.
 12. Ask “Where does he study?” and confirm the stream metadata says `"retrieval": "semantic"` and the answer names Vardhaman College of Engineering.
-13. Upload a real portrait and résumé; verify `/media/...` loads through the web origin and survives a redeploy.
+13. Confirm `/images/somanadh-profile.jpeg` loads through the web origin. Upload a replacement portrait or résumé only if needed; verify `/media/...` loads and survives a redeploy.
 14. Check `/sitemap.xml` and `/robots.txt` use the production URL; `/admin` is disallowed.
 15. Run `QA_BASE_URL=https://www.example npm run qa` from `web/` if Chrome is available.
 

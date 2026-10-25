@@ -196,7 +196,7 @@ These are real gaps, not footnotes:
 - **Multi-instance RAG.** Chroma and the model cache are host-local; no shared vector store or distributed cache was tested.
 - **Cold model download.** The model was cached locally. A fresh-host first download was not exercised end-to-end in CI.
 - **Multi-instance rate limiting.** The limiter is in-process and single-instance.
-- **Real portrait.** The placeholder is intentional.
+- **Portrait rendering.** The supplied JPEG was verified at 1440px and 390px, with reduced motion enabled, and rendered through `next/image` without console errors.
 - **StudentOS / QEMS details.** No functionality, stack, outcomes, or links are published because they are not verified.
 - **Email delivery.** Contact messages are stored in the database; no email provider is configured.
 - **Production admin hardening beyond this code.** WAF, IP allow-listing, SSO, and secret rotation are deployment concerns not implemented here.

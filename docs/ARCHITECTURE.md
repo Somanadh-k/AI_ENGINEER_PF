@@ -172,6 +172,6 @@ Vectors are deliberately **not** stored in SQLite. Chroma persists under `CHROMA
 - Live OpenRouter inference was verified locally with a free model; no paid-model evaluation or production provider monitoring exists.
 - Public deployment, TLS, CDN geo headers, persistent media, and a shared Chroma volume have not been tested in a hosting environment.
 - The embedding model cache is host-local. A fresh instance needs network access for the first download unless the cache is pre-populated.
-- The real portrait is absent by design.
+- The portrait source is a 400×400 JPEG. It is rendered through `next/image`; a higher-resolution source would improve sharpness on very large or high-density displays.
 - StudentOS and QEMS remain sealed until verified.
 - No certifications or GitHub URL are published because they are not verified.

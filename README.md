@@ -16,7 +16,7 @@ A cinematic, production-oriented portfolio for **Somanadh K**, built as a real s
 | Protected `/admin` studio | Working locally: analytics, messages, content editor, knowledge reindex, uploads, export |
 | Consent-gated analytics and live visitor count | Working locally with real test events |
 | StudentOS / QEMS | Intentionally sealed; no invented functionality, stack, outcomes, or links |
-| Real portrait | Not supplied; an abstract placeholder is rendered until one is uploaded |
+| Real portrait | Supplied and integrated in the hero; original preserved at the repository root |
 | GitHub / certifications | Intentionally absent until verified |
 | Production deployment | Documented, not performed |
 
