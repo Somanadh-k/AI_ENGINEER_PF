@@ -13,10 +13,13 @@ Browser
   │                                                ▼
   │                                         FastAPI (api/)
   │                                                │
-  │                          ┌─────────────────────┼─────────────────────┐
-  │                          ▼                     ▼                     ▼
-  │                    SQLAlchemy            OpenRouter            local media
-  │                    SQLite / Postgres      (optional)            api/uploads
+  │              ┌─────────────────┬───────────────┼───────────────┬──────────────┐
+  │              ▼                 ▼               ▼               ▼              ▼
+  │        SQLAlchemy        RAG retrieval     OpenRouter      local media    admin auth
+  │     SQLite / Postgres   Chroma + MiniLM    (optional)      api/uploads    sessions
+  │                              │
+  │                              ▼
+  │                    knowledge/*.md (source)
   │
   └── /admin ───────────────────── private studio route
 ```
@@ -54,7 +57,8 @@ FastAPI modules:
 | `app/schemas.py` | request validation |
 | `app/content.py` | seed, read, validate, save content |
 | `app/ai.py` | OpenRouter streaming, prompt rules, fallback, logging |
-| `app/knowledge.py` | chunking, lexical retrieval, intent detection, grounded answers |
+| `app/rag.py` | Markdown ingestion, heading-aware chunks, embeddings, Chroma retrieval, status/reindex |
+| `app/knowledge.py` | site-record lexical retrieval, intent detection, deterministic fallback answers |
 | `app/analytics.py` | event ingestion, session enrichment, aggregated summaries |
 | `app/auth.py` | password verification, admin sessions, cookie helpers |
 | `app/ratelimit.py` | in-process sliding-window rate limiter |
@@ -86,19 +90,26 @@ On first boot, the API reads `content/portfolio.json` and writes rows. If any co
 - Use `/admin` to update runtime content, or delete the local SQLite file to reseed.
 - The web fallback JSON is a build-time copy and is refreshed by `npm run content:sync`.
 
-### AI assistant
+### AI assistant and RAG
 
 1. The browser POSTs to `/api/proxy/ai/chat`.
-2. FastAPI validates the message list and applies the chat rate limit.
-3. `KnowledgeBase` builds chunks from the current content document.
-4. The latest user message is sanitised and checked for prompt-injection patterns.
-5. Retrieval uses tokenised lexical relevance, tag boosts, aliases, and intent detection. There is no pgvector dependency.
-6. If OpenRouter is configured, the top chunks become a strict system prompt and the model streams through OpenRouter.
-7. If it is not configured, `answer_from_records()` assembles a deterministic answer from the same records.
-8. If the provider fails, the stream switches to the deterministic answer and emits a recoverable error event.
+2. FastAPI validates the message list, applies the chat rate limit, and sanitises the latest user message.
+3. Prompt-injection patterns and unsupported sensitive questions (for example salary) are handled before retrieval.
+4. `app/rag.py` lazily loads the Sentence Transformer (`all-MiniLM-L6-v2`) and queries the persistent Chroma collection (`api/data/chroma`) for public chunks.
+5. Chroma cosine candidates are reranked with query aliases, heading/category hints, and lexical overlap. A configurable threshold (`RAG_SIMILARITY_THRESHOLD`) prevents unrelated context from being forced into the prompt.
+6. The Markdown knowledge base is the primary factual source. If it returns no usable context, the existing `KnowledgeBase` lexical records remain a fallback for site-specific questions.
+7. If OpenRouter is configured, the retrieved chunks become a strict system prompt and the model streams through OpenRouter.
+8. If it is not configured, or the provider fails, `answer_from_knowledge()` / `answer_from_records()` assemble a labelled deterministic answer.
 9. Every interaction is logged with question, intent, mode, latency, token counts, and source titles.
 
-The system prompt forbids inventing employers, dates, metrics, projects, certifications, or seniority. Unverified projects must be described as unpublished. The assistant also refuses attempts to reveal instructions or change its rules.
+The system prompt forbids inventing employers, dates, metrics, projects, certifications, or seniority. It also states that retrieved knowledge is untrusted data, not instructions. Unverified projects must be described as concepts with unconfirmed status. Internal sections of the knowledge base (verification notes, source notes, and the document's own RAG rules) are marked `visibility=internal` and excluded from visitor retrieval.
+
+The knowledge base is ingested by headings first. Small sibling sections are merged toward the configured chunk budget; long sections are split with overlap. Each chunk carries source, section, heading path, category, visibility, chunk index, token estimate, and a site anchor. The manifest stores the document SHA-256, model, timestamp, and chunk counts so unchanged documents are not re-embedded on every request.
+
+Admin endpoints:
+
+- `GET /api/admin/knowledge` — status, chunk counts, model, hash, last indexed timestamp, safe error.
+- `POST /api/admin/knowledge/reindex` — rebuild the Chroma collection. Admin session required; no public ingestion or upload route exists.
 
 ### Analytics
 
@@ -131,9 +142,11 @@ The system prompt forbids inventing employers, dates, metrics, projects, certifi
 
 ## Database
 
-SQLite is the development default. PostgreSQL is the production target. JSON columns use SQLAlchemy's JSON with a JSONB variant for PostgreSQL.
+SQLite is the development default and the current supported portfolio runtime. PostgreSQL remains an optional deployment target for the existing application; the RAG work does not require or perform a migration. JSON columns use SQLAlchemy's JSON with a JSONB variant for PostgreSQL.
 
-Local startup calls `Base.metadata.create_all()`. That creates missing tables but does not alter existing ones. Production should apply `api/migrations/001_initial.sql` (and future numbered migrations) explicitly. See `api/migrations/README.md`.
+Local startup calls `Base.metadata.create_all()`. That creates missing tables but does not alter existing ones. If PostgreSQL is used, apply `api/migrations/001_initial.sql` (and future numbered migrations) explicitly. See `api/migrations/README.md`.
+
+Vectors are deliberately **not** stored in SQLite. Chroma persists under `CHROMA_DIR` (default `api/data/chroma`) with a JSON manifest for document-hash detection. This keeps the application database unchanged and makes reindexing independent of content saves.
 
 ## Security boundaries
 
@@ -147,7 +160,7 @@ Local startup calls `Base.metadata.create_all()`. That creates missing tables bu
 
 ## Deliberate trade-offs
 
-- **Lexical retrieval instead of pgvector.** The corpus is small and structured. Extra vector infrastructure would not improve grounded answers enough to justify it.
+- **Local embeddings + Chroma instead of pgvector.** The corpus is one Markdown file and the deployment is single-instance. A local model and embedded Chroma keep the vector index out of the application database and avoid a managed vector service. The trade-off is a per-host model cache and a local persistent directory.
 - **SSE instead of WebSockets.** The assistant and admin pulse are one-way streams. SSE is simpler and works through the proxy.
 - **In-process rate limiting.** Correct for a single instance; move buckets to Redis before scaling horizontally.
 - **Local uploads.** Simple and transparent; production needs a persistent volume or object storage.
@@ -156,8 +169,9 @@ Local startup calls `Base.metadata.create_all()`. That creates missing tables bu
 
 ## Known gaps
 
-- Live OpenRouter inference has not been exercised without credentials.
-- Public deployment, TLS, CDN geo headers, and persistent media have not been tested in a hosting environment.
+- Live OpenRouter inference was verified locally with a free model; no paid-model evaluation or production provider monitoring exists.
+- Public deployment, TLS, CDN geo headers, persistent media, and a shared Chroma volume have not been tested in a hosting environment.
+- The embedding model cache is host-local. A fresh instance needs network access for the first download unless the cache is pre-populated.
 - The real portrait is absent by design.
 - StudentOS and QEMS remain sealed until verified.
 - No certifications or GitHub URL are published because they are not verified.

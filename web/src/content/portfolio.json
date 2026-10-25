@@ -638,12 +638,11 @@
     "tagline": "Grounded in verified portfolio data. Nothing invented.",
     "disclaimer": "Assistant-generated. May be incomplete — verify anything important with Somanadh directly.",
     "suggestedQuestions": [
-      "Who is Somanadh?",
-      "What does he work on at SooperVision?",
-      "How does he use RAG?",
-      "Does he know FastAPI?",
-      "What are StudentOS and QEMS?",
-      "Why should I hire him?",
+      "Tell me about Somanadh",
+      "Explore his AI projects",
+      "What is his internship experience?",
+      "What is his tech stack?",
+      "Explain his work with AI agents",
       "How can I contact him?"
     ],
     "fallbackNotice": "Local grounded mode — OpenRouter is not configured, so answers are assembled directly from verified portfolio records.",

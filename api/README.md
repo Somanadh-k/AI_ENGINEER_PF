@@ -6,6 +6,7 @@ Full documentation lives at the repository root:
 
 - [README](../README.md)
 - [Architecture](../docs/ARCHITECTURE.md)
+- [RAG setup](../docs/RAG.md)
 - [Deployment](../docs/DEPLOYMENT.md)
 - [Admin studio](../docs/ADMIN.md)
 - [Testing](../docs/TESTING.md)
@@ -20,6 +21,8 @@ uv run pytest
 ```
 
 Configuration is read from environment variables, then `../.env`, then `api/.env`. See `../.env.example`.
+
+The assistant uses `app/rag.py`, the Markdown source in `knowledge/`, Sentence Transformers (`all-MiniLM-L6-v2`), and a persistent Chroma directory at `data/chroma` (gitignored). The first run downloads the embedding model and builds the index; the admin Knowledge tab shows status and reindex controls. See [RAG setup](../docs/RAG.md).
 
 ## Endpoints
 
@@ -39,6 +42,8 @@ Configuration is read from environment variables, then `../.env`, then `api/.env
 | POST | `/api/admin/logout` | admin logout |
 | GET | `/api/admin/me` | current session |
 | GET/PUT | `/api/admin/content` | read/save content |
+| GET | `/api/admin/knowledge` | RAG status, counts, model, errors |
+| POST | `/api/admin/knowledge/reindex` | rebuild the Chroma index |
 | GET | `/api/admin/analytics` | aggregated analytics |
 | GET | `/api/admin/messages` | contact inbox |
 | PATCH | `/api/admin/messages/{id}` | update message status |

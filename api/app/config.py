@@ -28,8 +28,9 @@ class Settings(BaseSettings):
     # Next.js proxy, but direct access stays possible during local development.
     frontend_origin: str = "http://localhost:3000"
 
-    # SQLite by default so the project runs with zero infrastructure.
-    # Production: postgresql+psycopg://user:pass@host:5432/db
+    # SQLite is the supported default so the project runs with zero
+    # infrastructure. PostgreSQL remains an optional deployment target.
+    # postgresql+psycopg://user:pass@host:5432/db
     database_url: str = "sqlite+aiosqlite:///./data/somanadh.db"
 
     # Content source of truth. The API seeds its content tables from this file
@@ -46,6 +47,24 @@ class Settings(BaseSettings):
     openrouter_title: str = "SOMANADH.OS Portfolio"
     ai_timeout_seconds: float = 60.0
     ai_max_output_tokens: int = 1600
+
+    # --- Retrieval-augmented generation -------------------------------------
+    # The Markdown knowledge base is the primary factual source for the
+    # assistant. Site content remains available as a lexical fallback.
+    rag_enabled: bool = True
+    knowledge_path: str = str(API_DIR / "knowledge" / "Somanadh_Portfolio_RAG_Knowledge_Base.md")
+    chroma_dir: str = str(API_DIR / "data" / "chroma")
+    rag_collection: str = "somanadh_knowledge"
+    rag_embedding_model: str = "all-MiniLM-L6-v2"
+    # "sentence-transformers" is the production backend. "hash" is a
+    # deterministic offline fallback for constrained environments and tests.
+    rag_embedding_backend: str = "sentence-transformers"
+    rag_top_k: int = 5
+    rag_similarity_threshold: float = 0.30
+    rag_chunk_tokens: int = 550
+    rag_chunk_overlap: int = 80
+    rag_max_context_chars: int = 7000
+    rag_auto_reindex: bool = True
 
     # --- Admin --------------------------------------------------------------
     admin_email: str = "skollavajjala@gmail.com"

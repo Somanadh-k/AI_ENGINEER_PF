@@ -2,17 +2,18 @@
 
 A cinematic, production-oriented portfolio for **Somanadh K**, built as a real system rather than a static brochure: a Next.js frontend, a FastAPI service, a grounded AI assistant, consent-gated analytics, and a private content studio.
 
-> **Current status:** built and verified locally. Public deployment has **not** been performed. OpenRouter live inference is configured and was **tested locally**; free-model availability can change, so the assistant falls back to its deterministic grounded answers when the provider fails. StudentOS and QEMS remain sealed records because their details have not been verified for publication.
+> **Current status:** built and verified locally. Public deployment has **not** been performed. OpenRouter live inference is configured and was **tested locally**; free-model availability can change, so the assistant falls back to its deterministic grounded answers when the provider fails. The public StudentOS and QEMS records remain sealed; the RAG knowledge base describes them only as concepts with unverified status.
 
 ## What is actually here
 
 | Area | Status |
 | --- | --- |
 | Cinematic frontend, responsive layouts, reduced-motion support | Built and browser-tested locally |
-| FastAPI content, analytics, contact, AI, admin APIs | Built; 12 API tests passing |
-| Grounded assistant without an LLM | Working deterministic fallback |
+| FastAPI content, analytics, contact, AI, admin APIs | Built; 24 API tests passing |
+| RAG assistant with local embeddings + persistent Chroma | Implemented; 22 indexed chunks (18 public, 4 internal) |
+| Grounded assistant without an LLM | Working deterministic KB-grounded fallback |
 | OpenRouter streaming | Implemented; **live-tested locally** on 2026-10-25 with `dots-studio/dots-3-note-preview:free` |
-| Protected `/admin` studio | Working locally: analytics, messages, content editor, uploads, export |
+| Protected `/admin` studio | Working locally: analytics, messages, content editor, knowledge reindex, uploads, export |
 | Consent-gated analytics and live visitor count | Working locally with real test events |
 | StudentOS / QEMS | Intentionally sealed; no invented functionality, stack, outcomes, or links |
 | Real portrait | Not supplied; an abstract placeholder is rendered until one is uploaded |
@@ -24,8 +25,8 @@ The site never presents Somanadh as senior or as anything other than an early-ca
 ## Stack
 
 - **Web:** Next.js 16 App Router, React 19, TypeScript, Tailwind CSS v4, Motion, React Three Fiber / Three.js, Radix Dialog, Recharts
-- **API:** Python 3.14, FastAPI, SQLAlchemy 2 async, Pydantic Settings, SQLite for development, PostgreSQL for production
-- **AI:** OpenRouter streaming when configured; deterministic lexical retrieval and grounded answers otherwise
+- **API:** Python 3.14, FastAPI, SQLAlchemy 2 async, Pydantic Settings, SQLite (supported default), optional PostgreSQL
+- **AI/RAG:** Sentence Transformers (`all-MiniLM-L6-v2`) embeddings, persistent ChromaDB, Markdown heading-aware chunks, OpenRouter streaming when configured, deterministic grounded answers otherwise
 - **Auth:** password login, bcrypt hash support, random server-side session token hashed in the database, HttpOnly cookie
 - **Analytics:** consent-gated anonymous visitor/session IDs, no raw IP storage, country only from CDN headers
 
@@ -35,7 +36,9 @@ The site never presents Somanadh as senior or as anything other than an early-ca
 .
 ├── content/portfolio.json       # single source of truth for seed + bundled fallback
 ├── api/
-│   ├── app/                     # FastAPI application
+│   ├── app/                     # FastAPI application (including app/rag.py)
+│   ├── knowledge/               # primary Markdown RAG knowledge base
+│   ├── data/chroma/             # generated persistent vector index (ignored)
 │   ├── migrations/              # PostgreSQL baseline migration
 │   └── tests/                   # isolated pytest suite
 ├── web/
@@ -75,6 +78,8 @@ COOKIE_SECURE=false
 
 Leave `OPENROUTER_API_KEY` and `OPENROUTER_MODEL` empty to use the grounded fallback. Set both to enable live inference. The local setup uses `dots-studio/dots-3-note-preview:free`; reasoning-style free models need `AI_MAX_OUTPUT_TOKENS=1600` or more, because they spend tokens before producing visible text.
 
+The RAG layer is enabled by default. The first run downloads `all-MiniLM-L6-v2` from Hugging Face (about 90 MB) and builds `api/data/chroma`; subsequent starts use the cached model and persistent index. To keep the index current, either leave `RAG_AUTO_REINDEX=true` (default) or reindex from `/admin` → Knowledge after editing the Markdown file. See [RAG setup](docs/RAG.md).
+
 ### 2. Start the API
 
 ```bash
@@ -82,6 +87,8 @@ cd api
 uv sync --dev
 uv run uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
 ```
+
+The first retrieval request may take a few seconds while the embedding model loads. The index is created automatically from `api/knowledge/Somanadh_Portfolio_RAG_Knowledge_Base.md`; the studio's Knowledge tab shows status, chunk counts, model, and indexing errors.
 
 Health: <http://127.0.0.1:8000/api/health>  
 API docs (development only): <http://127.0.0.1:8000/docs>
@@ -121,7 +128,7 @@ Only add facts that can be verified. The `StudentOS` and `QEMS` records are deli
 
 ```bash
 cd api
-uv run pytest                         # 12 tests, isolated temp DB
+uv run pytest                         # 24 tests, isolated temp DB + Chroma
 uv run uvicorn app.main:app --reload  # development server
 ```
 
@@ -154,6 +161,7 @@ Output: `web/public/resume/Somanadh-K-Resume.pdf`. Chrome/Chromium is required. 
 ## Documentation
 
 - [Architecture](docs/ARCHITECTURE.md)
+- [RAG setup and maintenance](docs/RAG.md)
 - [Deployment](docs/DEPLOYMENT.md)
 - [Admin studio](docs/ADMIN.md)
 - [Testing and verification](docs/TESTING.md)
@@ -165,13 +173,15 @@ Output: `web/public/resume/Somanadh-K-Resume.pdf`. Chrome/Chromium is required. 
 - API input is validated with Pydantic; uploads are size-limited and content-sniffed.
 - Admin sessions are random tokens stored hashed in the database and sent in an HttpOnly, SameSite=Lax cookie; Secure is forced in production.
 - Analytics require explicit consent. Raw IP addresses are never stored. Rate-limit fingerprints are salted hashes and are not persisted.
-- The assistant treats visitor input as untrusted, refuses prompt-injection attempts, and will not invent unpublished facts.
+- The assistant treats visitor input **and retrieved knowledge chunks** as untrusted, refuses prompt-injection attempts, excludes internal working notes from retrieval, and will not invent unpublished facts.
 - `/admin` is excluded from robots and sitemap output.
 - Rate limiting is in-process and assumes one API instance. Use Redis if you scale horizontally.
 
 ## Known limitations
 
-- **Live inference depends on a free model.** It was tested locally with `dots-studio/dots-3-note-preview:free`. Free models can be rate-limited or retired; when that happens the API recovers with labelled grounded answers. No production provider monitoring or paid-model evaluation has been done.
+- **Live inference depends on a free model.** It was tested locally with `dots-studio/dots-3-note-preview:free`. `openrouter/free` is accepted as a configuration value, but locally it returned a safety stub rather than an answer, so it is not the verified default. Free models can be rate-limited or retired; when that happens the API recovers with labelled grounded answers. No production provider monitoring or paid-model evaluation has been done.
+- **RAG is local and single-process.** Chroma persists under `api/data/chroma`, and the embedding model is cached on the host. Horizontal scaling would need shared vector storage and a shared model cache; neither is configured.
+- **First model download needs network access.** A fresh host must be able to reach Hugging Face once, or the model must be pre-populated in the Hugging Face cache. The hash embedding backend exists only as a constrained/offline fallback.
 - **No public deployment test.** Deployment configuration is documented, not proven in a hosting environment.
 - **Uploads are local files.** Production must mount a persistent volume or replace the media layer with object storage.
 - **Geo data depends on the host.** Country is recorded only when a CDN supplies `x-vercel-ip-country`, `cf-ipcountry`, or `x-country-code`.

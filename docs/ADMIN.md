@@ -81,6 +81,25 @@ Content rules:
 
 `GET /api/admin/export` downloads the current document as `portfolio-export.json`. Use it before risky edits and to move runtime content back into `content/portfolio.json` after review.
 
+## Knowledge
+
+The Knowledge tab shows the retrieval index used by the assistant.
+
+- **Status:** `Ready`, `Stale`, `Not indexed`, `Missing`, or `Error`.
+- **Chunks:** total indexed chunks plus public/internal counts. Internal chunks are never retrieved for visitors.
+- **Last indexed / document hash:** detects whether the Markdown file changed since the last build.
+- **Embedding model:** `all-MiniLM-L6-v2` with the active backend and retrieval settings.
+- **Reindex:** rebuilds the Chroma collection from `api/knowledge/Somanadh_Portfolio_RAG_Knowledge_Base.md`. This is the only supported ingestion path; there is no public upload or ingestion endpoint.
+
+Endpoints (admin session required):
+
+- `GET /api/admin/knowledge`
+- `POST /api/admin/knowledge/reindex`
+
+If the Markdown file is missing, the tab reports `Missing` and the assistant falls back to the existing lexical portfolio records. If indexing fails, the tab shows a safe error and the API logs the internal exception. Reindexing does not modify portfolio content, messages, or analytics.
+
+The vector data lives in `CHROMA_DIR` (default `api/data/chroma`) and is gitignored. A reindex can run while the API is serving traffic. A search that overlaps the rebuild may briefly fall back to lexical records; the chat request does not fail.
+
 ## Media
 
 The Media tab supports:
@@ -118,5 +137,6 @@ Before publishing a change:
 - [ ] Save, then load the public page and check the revision.
 - [ ] Export the document if the change matters.
 - [ ] Confirm the assistant still answers from the updated records.
+- [ ] If the Markdown knowledge base changed, reindex from the Knowledge tab and verify the chunk count/hash.
 - [ ] Confirm the fallback JSON is synced if you changed the seed file.
 - [ ] Check the studio on a narrow viewport.

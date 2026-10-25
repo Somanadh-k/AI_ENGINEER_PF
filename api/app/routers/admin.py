@@ -30,6 +30,7 @@ from ..content import (
 )
 from ..db import SessionLocal, get_db, iso_utc
 from ..models import AdminSession, ContactSubmission, utcnow
+from ..rag import RAGError, knowledge_status, reindex_knowledge
 from ..ratelimit import enforce_rate_limit
 from ..schemas import ContentPutIn, LoginIn, MessageStatusIn
 
@@ -236,6 +237,27 @@ async def upload(
                 old.unlink(missing_ok=True)
 
     return {"ok": True, "url": url, "kind": kind, "bytes": len(data)}
+
+
+@router.get("/knowledge")
+async def admin_knowledge(
+    _: AdminSession = Depends(require_admin),
+) -> dict:
+    return await knowledge_status()
+
+
+@router.post("/knowledge/reindex")
+async def admin_reindex_knowledge(
+    _: AdminSession = Depends(require_admin),
+) -> dict:
+    try:
+        status = await reindex_knowledge()
+    except RAGError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail=str(exc),
+        ) from exc
+    return {"ok": True, "knowledge": status}
 
 
 @router.get("/stream")

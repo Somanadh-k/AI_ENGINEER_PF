@@ -5,6 +5,7 @@ import {
   AlertTriangle,
   ArrowUpRight,
   BarChart3,
+  BookOpen,
   Check,
   Clipboard,
   Database,
@@ -29,7 +30,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 
 type AuthState = "checking" | "out" | "in" | "offline";
-type Tab = "overview" | "messages" | "content" | "media";
+type Tab = "overview" | "messages" | "content" | "knowledge" | "media";
 type RangeKey = "24h" | "7d" | "30d" | "90d" | "all";
 type UploadKind = "portrait" | "resume" | "project";
 
@@ -114,6 +115,25 @@ interface AdminMe {
 interface ContentDocument {
   meta?: { revision?: string; updatedAt?: string };
   [key: string]: unknown;
+}
+
+interface KnowledgeStatus {
+  enabled: boolean;
+  available: boolean;
+  indexed: boolean;
+  stale: boolean;
+  source: string;
+  chunks: number;
+  publicChunks: number;
+  internalChunks: number;
+  lastIndexedAt?: string | null;
+  documentHash?: string | null;
+  embeddingModel: string;
+  embeddingBackend: string;
+  collection: string;
+  topK: number;
+  similarityThreshold: number;
+  error?: string | null;
 }
 
 class ApiError extends Error {
@@ -314,8 +334,8 @@ function LoginScreen({
           </div>
         </div>
         <p className="mt-5 text-[0.8125rem] leading-relaxed text-muted">
-          Content, messages, analytics, and media live behind one password. The session is an
-          HttpOnly cookie; the API rate-limits repeated attempts.
+          Content, messages, analytics, media, and the knowledge index live behind one password. The
+          session is an HttpOnly cookie; the API rate-limits repeated attempts.
         </p>
         <form
           className="mt-6"
@@ -382,6 +402,11 @@ export function AdminStudio() {
   const [contentError, setContentError] = useState<string | null>(null);
   const [contentNotice, setContentNotice] = useState<string | null>(null);
 
+  const [knowledge, setKnowledge] = useState<KnowledgeStatus | null>(null);
+  const [knowledgeState, setKnowledgeState] = useState<"idle" | "loading" | "ready" | "error" | "reindexing">("idle");
+  const [knowledgeError, setKnowledgeError] = useState<string | null>(null);
+  const [knowledgeNotice, setKnowledgeNotice] = useState<string | null>(null);
+
   const [uploadKind, setUploadKind] = useState<UploadKind>("portrait");
   const [uploadFile, setUploadFile] = useState<File | null>(null);
   const [uploadState, setUploadState] = useState<"idle" | "uploading" | "done" | "error">("idle");
@@ -404,6 +429,23 @@ export function AdminStudio() {
       }
       setAnalyticsState("error");
       setAnalyticsError(error instanceof Error ? error.message : "Analytics unavailable");
+    }
+  }, []);
+
+  const loadKnowledge = useCallback(async () => {
+    setKnowledgeState("loading");
+    setKnowledgeError(null);
+    try {
+      const status = await api<KnowledgeStatus>("/admin/knowledge");
+      setKnowledge(status);
+      setKnowledgeState("ready");
+    } catch (error) {
+      if (error instanceof ApiError && error.status === 401) {
+        setAuth("out");
+        return;
+      }
+      setKnowledgeState("error");
+      setKnowledgeError(error instanceof Error ? error.message : "Knowledge status unavailable");
     }
   }, []);
 
@@ -506,6 +548,12 @@ export function AdminStudio() {
     };
   }, [auth, tab]);
 
+  useEffect(() => {
+    if (auth !== "in" || tab !== "knowledge") return;
+    const timer = window.setTimeout(() => void loadKnowledge(), 0);
+    return () => window.clearTimeout(timer);
+  }, [auth, loadKnowledge, tab]);
+
   const login = async (password: string) => {
     setLoginBusy(true);
     setAuthError(null);
@@ -536,6 +584,8 @@ export function AdminStudio() {
     setMessages([]);
     setContentText("");
     setContentState("idle");
+    setKnowledge(null);
+    setKnowledgeState("idle");
   };
 
   const updateMessageStatus = async (id: number, status: ContactMessage["status"]) => {
@@ -618,6 +668,29 @@ export function AdminStudio() {
     } catch (error) {
       setContentState("error");
       setContentError(error instanceof Error ? error.message : "Content unavailable");
+    }
+  };
+
+  const reindexKnowledge = async () => {
+    setKnowledgeState("reindexing");
+    setKnowledgeError(null);
+    setKnowledgeNotice(null);
+    try {
+      const result = await api<{ ok: boolean; knowledge: KnowledgeStatus }>("/admin/knowledge/reindex", {
+        method: "POST",
+      });
+      setKnowledge(result.knowledge);
+      setKnowledgeState("ready");
+      setKnowledgeNotice(
+        `Indexed ${result.knowledge.chunks} chunks (${result.knowledge.publicChunks} public, ${result.knowledge.internalChunks} internal).`,
+      );
+    } catch (error) {
+      if (error instanceof ApiError && error.status === 401) {
+        setAuth("out");
+        return;
+      }
+      setKnowledgeState("error");
+      setKnowledgeError(error instanceof Error ? error.message : "Reindex failed");
     }
   };
 
@@ -751,6 +824,7 @@ export function AdminStudio() {
               { id: "overview", label: "Overview", icon: <BarChart3 size={12} /> },
               { id: "messages", label: "Messages", icon: <Inbox size={12} /> },
               { id: "content", label: "Content", icon: <Database size={12} /> },
+              { id: "knowledge", label: "Knowledge", icon: <BookOpen size={12} /> },
               { id: "media", label: "Media", icon: <ImageIcon size={12} /> },
             ] as const
           ).map((item) => (
@@ -1126,6 +1200,147 @@ export function AdminStudio() {
               Publishing updates the API content store immediately. The public site revalidates within 20 seconds.
               Keep a backup via Export before large edits.
             </p>
+          </div>
+        )}
+
+        {tab === "knowledge" && (
+          <div className="space-y-5">
+            <div className="flex flex-wrap items-end justify-between gap-4">
+              <div>
+                <p className="label text-cyan">Retrieval layer</p>
+                <h1 className="mt-2 font-display text-3xl tracking-tight text-silver">Knowledge base</h1>
+                <p className="mt-2 max-w-2xl text-[0.8125rem] leading-relaxed text-muted">
+                  The assistant retrieves from the Markdown knowledge base through local embeddings and
+                  a persistent Chroma index. Internal working notes are excluded from visitor retrieval.
+                </p>
+              </div>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => void loadKnowledge()}
+                  className="btn btn-ghost h-9 px-3 text-[0.5625rem]"
+                  disabled={knowledgeState === "loading" || knowledgeState === "reindexing"}
+                >
+                  <RefreshCw
+                    size={11}
+                    className={knowledgeState === "loading" ? "animate-spin" : ""}
+                  />
+                  Refresh
+                </button>
+                <button
+                  type="button"
+                  onClick={() => void reindexKnowledge()}
+                  className="btn btn-primary h-9 px-3 text-[0.5625rem]"
+                  disabled={knowledgeState === "reindexing" || knowledgeState === "loading"}
+                >
+                  {knowledgeState === "reindexing" ? (
+                    <Loader2 size={11} className="animate-spin" />
+                  ) : (
+                    <Database size={11} />
+                  )}
+                  {knowledgeState === "reindexing" ? "Indexing" : "Reindex"}
+                </button>
+              </div>
+            </div>
+
+            {knowledgeError && (
+              <p role="alert" className="border border-violet/30 bg-violet/[0.04] p-3 text-[0.75rem] text-violet/90">
+                {knowledgeError}
+              </p>
+            )}
+            {knowledgeNotice && (
+              <p role="status" className="border border-mint/30 bg-mint/[0.04] p-3 text-[0.75rem] text-mint/90">
+                {knowledgeNotice}
+              </p>
+            )}
+            {knowledge?.error && (
+              <p role="alert" className="border border-violet/30 bg-violet/[0.04] p-3 text-[0.75rem] text-violet/90">
+                {knowledge.error}
+              </p>
+            )}
+
+            <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+              <Stat
+                label="Indexed chunks"
+                value={formatNumber(knowledge?.chunks ?? 0)}
+                detail={`${formatNumber(knowledge?.publicChunks ?? 0)} public · ${formatNumber(
+                  knowledge?.internalChunks ?? 0,
+                )} internal`}
+                icon={<BookOpen size={14} />}
+              />
+              <Stat
+                label="State"
+                value={
+                  !knowledge
+                    ? "—"
+                    : knowledge.error
+                      ? "Error"
+                      : !knowledge.available
+                        ? "Missing"
+                        : knowledge.stale
+                          ? "Stale"
+                          : knowledge.indexed
+                            ? "Ready"
+                            : "Not indexed"
+                }
+                detail={knowledge?.stale ? "Source changed since indexing" : "Document hash checked"}
+                icon={<ShieldCheck size={14} />}
+              />
+              <Stat
+                label="Last indexed"
+                value={knowledge?.lastIndexedAt ? relativeTime(knowledge.lastIndexedAt) : "Never"}
+                detail={knowledge?.documentHash ? `hash ${knowledge.documentHash}` : "No manifest yet"}
+                icon={<RefreshCw size={14} />}
+              />
+              <Stat
+                label="Embedding model"
+                value={knowledge?.embeddingModel ?? "—"}
+                detail={`${knowledge?.embeddingBackend ?? "—"} · top ${knowledge?.topK ?? 5} · threshold ${
+                  knowledge?.similarityThreshold ?? 0.3
+                }`}
+                icon={<Database size={14} />}
+              />
+            </div>
+
+            <Panel
+              title="Index configuration"
+              action={
+                <span className="font-mono text-[0.5rem] uppercase tracking-[0.12em] text-muted/50">
+                  {knowledge?.source ?? "knowledge file"}
+                </span>
+              }
+            >
+              <div className="grid gap-3 text-[0.75rem] leading-relaxed text-muted sm:grid-cols-2">
+                <div className="border border-line/70 bg-void/30 p-3">
+                  <p className="label !text-[0.5rem]">Collection</p>
+                  <p className="mt-1 font-mono text-[0.6875rem] text-silver/80">
+                    {knowledge?.collection ?? "—"}
+                  </p>
+                </div>
+                <div className="border border-line/70 bg-void/30 p-3">
+                  <p className="label !text-[0.5rem]">Source file</p>
+                  <p className="mt-1 font-mono text-[0.6875rem] text-silver/80">
+                    {knowledge?.source ?? "—"}
+                  </p>
+                </div>
+                <div className="border border-line/70 bg-void/30 p-3">
+                  <p className="label !text-[0.5rem]">Retrieval</p>
+                  <p className="mt-1 font-mono text-[0.6875rem] text-silver/80">
+                    semantic + lexical rerank · visibility=public
+                  </p>
+                </div>
+                <div className="border border-line/70 bg-void/30 p-3">
+                  <p className="label !text-[0.5rem]">Auto reindex</p>
+                  <p className="mt-1 font-mono text-[0.6875rem] text-silver/80">
+                    on document hash change
+                  </p>
+                </div>
+              </div>
+              <p className="mt-4 text-[0.6875rem] leading-relaxed text-muted/60">
+                Reindexing rebuilds the collection from the Markdown file. The operation is admin-only,
+                never exposed publicly, and does not modify portfolio content or analytics.
+              </p>
+            </Panel>
           </div>
         )}
 

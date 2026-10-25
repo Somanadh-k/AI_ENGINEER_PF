@@ -6,6 +6,7 @@ The repository root contains the full setup, architecture, deployment, admin, an
 
 - [README](../README.md)
 - [Architecture](../docs/ARCHITECTURE.md)
+- [RAG setup](../docs/RAG.md)
 - [Deployment](../docs/DEPLOYMENT.md)
 - [Admin studio](../docs/ADMIN.md)
 - [Testing](../docs/TESTING.md)

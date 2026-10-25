@@ -30,6 +30,13 @@ os.environ.update(
         "OPENROUTER_MODEL": "",
         "UPLOAD_DIR": str(TEST_UPLOADS),
         "RESUME_DIR": str(TEST_UPLOADS / "resume"),
+        "CHROMA_DIR": str(TEST_ROOT / "chroma"),
+        "KNOWLEDGE_PATH": str(
+            REPO_ROOT / "api" / "knowledge" / "Somanadh_Portfolio_RAG_Knowledge_Base.md"
+        ),
+        "RAG_EMBEDDING_BACKEND": "sentence-transformers",
+        "RAG_AUTO_REINDEX": "true",
+        "RAG_SIMILARITY_THRESHOLD": "0.30",
     }
 )
 

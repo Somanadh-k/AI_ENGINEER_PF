@@ -6,7 +6,8 @@ Recorded on **2026-10-25** in the local workspace:
 
 | Check | Command | Result |
 | --- | --- | --- |
-| API tests | `cd api && uv run pytest` | **12 passed** in ~1.5s |
+| API tests | `cd api && uv run pytest` | **24 passed** in ~8–9s |
+| RAG tests | `cd api && uv run pytest tests/test_rag.py` | **12 passed** (real MiniLM embeddings, isolated Chroma) |
 | ESLint | `cd web && npm run lint` | Passed |
 | TypeScript | `cd web && npm run typecheck` | Passed |
 | Production build | `cd web && npm run build` | Passed; 13 static/SSG pages generated |
@@ -15,7 +16,7 @@ Recorded on **2026-10-25** in the local workspace:
 | Visual spot-check | Playwright screenshots at 1440 and 390 px | Hero, skills, privacy, project, admin checked |
 | Live OpenRouter chat | `POST /api/ai/chat` and the Next.js proxy | Grounded answer streamed; `mode: "openrouter"`; no fallback error |
 
-The only test warning is a Starlette deprecation notice about `httpx` in `TestClient`. It does not affect the application. The project pins current FastAPI/Starlette; revisit when Starlette's `httpx2` migration is stable.
+The remaining warning is a Chroma/OpenTelemetry deprecation notice about `asyncio.iscoroutinefunction` on Python 3.14. It does not affect retrieval or the application. The project pins current FastAPI/Starlette; revisit when the upstream telemetry dependency updates.
 
 ## API tests
 
@@ -75,6 +76,22 @@ uv run pytest
 - AI interactions are logged and appear in admin analytics.
 - Prompt-injection attempts receive the refusal path.
 - Audience intros fall back deterministically without OpenRouter.
+
+`tests/test_rag.py`
+
+- Markdown ingestion preserves heading paths, categories, source metadata, and privacy visibility.
+- Internal working notes (verification details, RAG rules, source note) are excluded from public chunks.
+- Chunk IDs are unique and chunk token estimates stay within the configured ceiling.
+- The real `all-MiniLM-L6-v2` model produces 384-dimensional normalized embeddings.
+- Semantic retrieval finds the expected category and evidence for study, QEMS, AgenticOps, leadership, research, StudentOS, and tech-stack questions.
+- Salary and unrelated questions return no retrieved context; salary is handled by the deterministic guardrail.
+- A private-note query cannot retrieve internal content.
+- Document hash changes trigger reindexing and update the chunk count.
+- Chat metadata reports `retrieval: "semantic"` and `knowledgeChunks` when RAG is used.
+- Research answers do not claim a publication.
+- QEMS answers keep the unverified deployment caveat.
+- Admin knowledge status/reindex require authentication; reindexing returns the current counts.
+- OpenRouter connection failure produces a labelled, recoverable grounded fallback.
 
 ### Adding tests
 
@@ -172,10 +189,12 @@ CHROME_BIN="/path/to/chrome" npm run qa
 
 These are real gaps, not footnotes:
 
-- **Live OpenRouter inference.** No `OPENROUTER_API_KEY` or `OPENROUTER_MODEL` was configured. Only the deterministic fallback and provider-failure code paths have been exercised.
+- **Live OpenRouter inference in production.** Local inference was verified on 2026-10-25, but no deployed provider monitoring, paid-model evaluation, or long-running reliability test exists.
 - **Public deployment.** No hosting provider, TLS certificate, custom domain, CDN, or production proxy was used.
 - **Production geo headers.** Country enrichment is tested with synthetic `x-vercel-ip-country`; real CDN behaviour is unverified.
-- **Persistent media.** Uploads were tested against a temporary directory, not a mounted production volume.
+- **Persistent media and Chroma storage.** Uploads and the vector index were tested against temporary directories, not mounted production volumes.
+- **Multi-instance RAG.** Chroma and the model cache are host-local; no shared vector store or distributed cache was tested.
+- **Cold model download.** The model was cached locally. A fresh-host first download was not exercised end-to-end in CI.
 - **Multi-instance rate limiting.** The limiter is in-process and single-instance.
 - **Real portrait.** The placeholder is intentional.
 - **StudentOS / QEMS details.** No functionality, stack, outcomes, or links are published because they are not verified.
@@ -227,3 +246,16 @@ On 2026-10-25 the assistant was tested with a real OpenRouter key using `dots-st
 - A "why hire" question used only verified records and stated that public deployment is pending.
 
 This verifies the local code path, not production reliability. Free models can rate-limit or disappear; the API then recovers with a labelled `fallback-degraded` answer. Re-run this check after changing `OPENROUTER_MODEL` and before making any public claim about live AI.
+
+## RAG check (local)
+
+On 2026-10-25 the Markdown knowledge base was indexed into `api/data/chroma`:
+
+- `POST /api/admin/knowledge/reindex` returned `indexed: true`, `chunks: 22`, `publicChunks: 18`, `internalChunks: 4`.
+- `GET /api/admin/knowledge` reported `embeddingModel: "all-MiniLM-L6-v2"`, `embeddingBackend: "sentence-transformers"`, and the document hash.
+- `POST /api/ai/chat` for “Where does he study?” returned `"retrieval": "semantic"`, `"knowledgeChunks": 5`, and an answer naming Vardhaman College of Engineering.
+- “What is QEMS?” returned the concept and explicitly kept the unverified deployment caveat.
+- “What is his current salary?” returned no retrieved chunks and the deterministic unsupported-question response.
+- The Knowledge tab in `/admin` rendered the status, counts, model, and reindex control.
+
+Re-run after editing the Markdown file. The first retrieval on a fresh host loads the embedding model (about 40 seconds cold, about 2.4 seconds warm in local testing).
