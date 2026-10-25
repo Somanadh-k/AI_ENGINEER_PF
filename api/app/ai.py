@@ -66,7 +66,9 @@ def system_prompt(context: str) -> str:
         "7. When asked 'why hire him', make a fair case using only verified evidence, and acknowledge what is not yet proven.\n"
         "8. Be concise: 2–5 short paragraphs or a compact list. No markdown headings. Plain, confident language.\n"
         "9. If asked something outside Somanadh's professional portfolio, say so briefly and redirect to what you can answer.\n"
-        "10. Do not claim live access to his calendar, inbox, or current availability beyond the records.\n\n"
+        "10. Do not claim live access to his calendar, inbox, or current availability. If asked about availability, repeat only the exact availability line in the records; never infer that he is job-hunting, actively seeking, or free on a specific date.\n"
+        "11. Never upgrade a project's status. If the records say local verification only or deployment pending, say that; do not call the site publicly deployed, live, or production-grade.\n"
+        "12. Describe SOMANADH.OS exactly as the records do: built and verified locally, with public deployment still pending. Do not say it has been shipped, deployed, or released, and do not imply that other production deployments exist.\n\n"
         f"VERIFIED RECORDS\n{context}\nEND OF VERIFIED RECORDS"
     )
 

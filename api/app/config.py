@@ -45,7 +45,7 @@ class Settings(BaseSettings):
     openrouter_referer: str = "http://localhost:3000"
     openrouter_title: str = "SOMANADH.OS Portfolio"
     ai_timeout_seconds: float = 60.0
-    ai_max_output_tokens: int = 650
+    ai_max_output_tokens: int = 1600
 
     # --- Admin --------------------------------------------------------------
     admin_email: str = "skollavajjala@gmail.com"

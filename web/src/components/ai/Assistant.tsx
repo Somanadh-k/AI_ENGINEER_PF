@@ -674,7 +674,11 @@ export function Assistant({ assistant }: AssistantProps) {
             </form>
             <div className="mt-2 flex items-center justify-between gap-3 px-1">
               <p className="text-[0.5625rem] leading-relaxed text-muted/50">
-                {mode === "openrouter" ? assistant.disclaimer : assistant.fallbackNotice}
+                {mode === "openrouter" || mode === "unknown"
+                  ? assistant.disclaimer
+                  : mode === "fallback-degraded"
+                    ? "Live model unavailable — answers are coming from verified local records."
+                    : assistant.fallbackNotice}
               </p>
               <span className="mono shrink-0 text-[0.5rem] uppercase tracking-[0.14em] text-muted/40">
                 {input.length}/900

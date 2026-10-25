@@ -2,7 +2,7 @@
 
 A cinematic, production-oriented portfolio for **Somanadh K**, built as a real system rather than a static brochure: a Next.js frontend, a FastAPI service, a grounded AI assistant, consent-gated analytics, and a private content studio.
 
-> **Current status:** built and verified locally. Public deployment has **not** been performed. OpenRouter live inference is **not** configured, so the assistant currently runs in its deterministic grounded fallback mode. StudentOS and QEMS remain sealed records because their details have not been verified for publication.
+> **Current status:** built and verified locally. Public deployment has **not** been performed. OpenRouter live inference is configured and was **tested locally**; free-model availability can change, so the assistant falls back to its deterministic grounded answers when the provider fails. StudentOS and QEMS remain sealed records because their details have not been verified for publication.
 
 ## What is actually here
 
@@ -11,7 +11,7 @@ A cinematic, production-oriented portfolio for **Somanadh K**, built as a real s
 | Cinematic frontend, responsive layouts, reduced-motion support | Built and browser-tested locally |
 | FastAPI content, analytics, contact, AI, admin APIs | Built; 12 API tests passing |
 | Grounded assistant without an LLM | Working deterministic fallback |
-| OpenRouter streaming | Implemented; **not tested live** because no key/model is configured |
+| OpenRouter streaming | Implemented; **live-tested locally** on 2026-10-25 with `dots-studio/dots-3-note-preview:free` |
 | Protected `/admin` studio | Working locally: analytics, messages, content editor, uploads, export |
 | Consent-gated analytics and live visitor count | Working locally with real test events |
 | StudentOS / QEMS | Intentionally sealed; no invented functionality, stack, outcomes, or links |
@@ -73,7 +73,7 @@ SECRET_SALT=choose-a-long-random-local-salt
 COOKIE_SECURE=false
 ```
 
-Leave `OPENROUTER_API_KEY` and `OPENROUTER_MODEL` empty to use the grounded fallback. Set both to enable live inference.
+Leave `OPENROUTER_API_KEY` and `OPENROUTER_MODEL` empty to use the grounded fallback. Set both to enable live inference. The local setup uses `dots-studio/dots-3-note-preview:free`; reasoning-style free models need `AI_MAX_OUTPUT_TOKENS=1600` or more, because they spend tokens before producing visible text.
 
 ### 2. Start the API
 
@@ -171,7 +171,7 @@ Output: `web/public/resume/Somanadh-K-Resume.pdf`. Chrome/Chromium is required. 
 
 ## Known limitations
 
-- **No live OpenRouter test.** The code path is implemented, but without `OPENROUTER_API_KEY` and `OPENROUTER_MODEL` only fallback mode has been exercised.
+- **Live inference depends on a free model.** It was tested locally with `dots-studio/dots-3-note-preview:free`. Free models can be rate-limited or retired; when that happens the API recovers with labelled grounded answers. No production provider monitoring or paid-model evaluation has been done.
 - **No public deployment test.** Deployment configuration is documented, not proven in a hosting environment.
 - **Uploads are local files.** Production must mount a persistent volume or replace the media layer with object storage.
 - **Geo data depends on the host.** Country is recorded only when a CDN supplies `x-vercel-ip-country`, `cf-ipcountry`, or `x-country-code`.

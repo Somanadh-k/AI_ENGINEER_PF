@@ -36,7 +36,8 @@ The browser only talks to the Next.js origin. FastAPI can be public for health c
 | `SECRET_SALT` | yes | Long random value; salts rate-limit fingerprints |
 | `COOKIE_SECURE` | yes | `true` in production (also forced by `ENVIRONMENT=production`) |
 | `OPENROUTER_API_KEY` | optional | Server-side only |
-| `OPENROUTER_MODEL` | optional | Must be set with the key for live inference |
+| `OPENROUTER_MODEL` | optional | Must be set with the key for live inference; `dots-studio/dots-3-note-preview:free` was verified locally |
+| `AI_MAX_OUTPUT_TOKENS` | optional | Default 1600; reasoning models need headroom before visible text |
 | `OPENROUTER_REFERER` | recommended | Public site URL |
 | `OPENROUTER_TITLE` | recommended | Human-readable app title |
 | `UPLOAD_DIR` | yes | Persistent volume path, e.g. `/var/data/uploads` |
@@ -186,7 +187,8 @@ The following are **not verified**:
 
 - Real deployment on Vercel/Render/Fly/Railway or any other host.
 - TLS, custom domain, CDN geo headers, and proxy streaming behaviour in production.
-- OpenRouter live inference.
+- OpenRouter live inference in a deployed environment. It was verified against the local API on 2026-10-25, but not from a production host.
+- Free-model availability over time; a rate-limited or retired model triggers the labelled grounded fallback.
 - Persistent volume behaviour across a real redeploy.
 - Multi-instance rate limiting.
 - Production email delivery (there is no email provider).

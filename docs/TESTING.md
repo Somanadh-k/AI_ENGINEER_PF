@@ -13,6 +13,7 @@ Recorded on **2026-10-25** in the local workspace:
 | Browser smoke test | `cd web && npm run qa` | **10/10** route/viewport checks passed |
 | Résumé generation | `node scripts/generate-resume.mjs` | 120 KB, one page |
 | Visual spot-check | Playwright screenshots at 1440 and 390 px | Hero, skills, privacy, project, admin checked |
+| Live OpenRouter chat | `POST /api/ai/chat` and the Next.js proxy | Grounded answer streamed; `mode: "openrouter"`; no fallback error |
 
 The only test warning is a Starlette deprecation notice about `httpx` in `TestClient`. It does not affect the application. The project pins current FastAPI/Starlette; revisit when Starlette's `httpx2` migration is stable.
 
@@ -213,3 +214,16 @@ cd web && npm run build
 ```
 
 Also remember that the database is authoritative after first boot; editing `content/portfolio.json` alone does not update a running database.
+
+## Live AI check (local)
+
+On 2026-10-25 the assistant was tested with a real OpenRouter key using `dots-studio/dots-3-note-preview:free`:
+
+- `GET /api/ai/status` returned `configured: true`, `mode: "openrouter"`, and the model ID.
+- `POST /api/ai/chat` streamed `meta`, `delta`, `done`, and no `error` event.
+- The same request through `/api/proxy/ai/chat` on the Next.js origin produced the same result.
+- A prompt-injection request was refused without revealing instructions.
+- An off-topic question was declined and redirected.
+- A "why hire" question used only verified records and stated that public deployment is pending.
+
+This verifies the local code path, not production reliability. Free models can rate-limit or disappear; the API then recovers with a labelled `fallback-degraded` answer. Re-run this check after changing `OPENROUTER_MODEL` and before making any public claim about live AI.
