@@ -12,6 +12,8 @@ RUN uv sync --frozen --no-dev --no-group embeddings --no-install-project
 COPY --chown=user api/app ./app
 COPY --chown=user api/knowledge ./knowledge
 COPY --chown=user content ./content
+# Lambda runs the container as an arbitrary uid; make the app readable by anyone.
+RUN chmod -R a+rX /home/user
 ENV ENVIRONMENT=production RAG_EMBEDDING_BACKEND=hash CONTENT_PATH=/home/user/app/content/portfolio.json \
     CHROMA_DIR=/home/user/chroma UPLOAD_DIR=/home/user/uploads RESUME_DIR=/home/user/uploads/resume
 HEALTHCHECK CMD python -c "import urllib.request as u; u.urlopen('http://127.0.0.1:8080/api/health')"

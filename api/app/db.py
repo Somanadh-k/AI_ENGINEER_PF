@@ -55,6 +55,8 @@ engine = create_async_engine(
     settings.database_url,
     echo=False,
     pool_pre_ping=True,
+    # PgBouncer (Neon pooler) runs in transaction mode: no server-side prepared statements.
+    connect_args={} if settings.database_url.startswith("sqlite") else {"prepare_threshold": None},
 )
 
 SessionLocal = async_sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)

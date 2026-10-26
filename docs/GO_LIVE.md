@@ -28,3 +28,13 @@ gcloud run deploy somanadh-api --source . --region us-central1 --allow-unauthent
   --set-secrets DATABASE_URL=...,PROXY_TOKEN=...   # or --set-env-vars (see secrets below)
 ```
 Set a $1 budget alert in Cloud Billing. `--max-instances 1` keeps the in-process rate limiter correct.
+
+## LIVE: AWS Lambda (us-east-1) + Neon + Vercel
+- Web: https://somanadh.info (Vercel project `ai-engineer-pf`). API: Lambda `somanadh-api` (arm64 container, 1 GB, Function URL, response streaming). DB: Neon Postgres (pooled). AI: OpenRouter.
+- Redeploy API after code changes:
+  `docker buildx build --platform linux/arm64 --provenance=false -t 137738969013.dkr.ecr.us-east-1.amazonaws.com/somanadh-api:latest --push .` then
+  `aws lambda update-function-code --function-name somanadh-api --image-uri <that image>`
+- Web: `vercel deploy --prod` from `web/` (or connect Git in Vercel for auto-deploy).
+- Lambda env vars hold secrets (visible to AWS account admins). Embeddings are `hash` (no torch). Rate limiting is per Lambda instance (account concurrency cap prevents reserving 1).
+- Admin uploads write to /tmp and are lost; the Chroma index rebuilds on cold start.
+- Rollback API: `update-function-code` with a previous image digest. Rollback web: Vercel Deployments → Promote.
